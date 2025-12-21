@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estate Haven - Find Your Dream Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--white);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%232563eb" width="1200" height="600"/><path fill="%231e40af" d="M0 300L50 325L100 300L150 325L200 300L250 325L300 300L350 325L400 300L450 325L500 300L550 325L600 300L650 325L700 300L750 325L800 300L850 325L900 300L950 325L1000 300L1050 325L1100 300L1150 325L1200 300V600H0Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            padding: 0.75rem 2rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Filters */
+        .filters {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .filters h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .filter-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-item label {
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .filter-item select,
+        .filter-item input {
+            padding: 0.5rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: var(--light-gray);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .tag.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary-dark);
+        }
+
+        /* Property Grid */
+        .properties-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .property-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #e5e7eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 3rem;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-content {
+            padding: 1.5rem;
+        }
+
+        .property-price {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .property-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .property-location {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .property-features {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .property-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--secondary);
+            color: var(--white);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--white);
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            z-index: 10;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #e5e7eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 5rem;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-location {
+            color: var(--gray);
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--light-gray);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-feature-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .modal-feature-label {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .modal-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .contact-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--secondary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: #059669;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-group {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: 100%;
+            }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">🏠 Estate Haven</div>
+            <ul class="nav-links">
+                <li><a href="#properties">Properties</a></li>
+                <li><a href="#buy">Buy</a></li>
+                <li><a href="#rent">Rent</a></li>
+                <li><a href="#sell">Sell</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Find Your Dream Home</h1>
+        <p>Discover the perfect property from our extensive collection</p>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by location, property name...">
+            <button class="search-btn" onclick="applyFilters()">🔍 Search</button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container" id="properties">
+        <!-- Filters -->
+        <div class="filters">
+            <h3>Filter Properties</h3>
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label>Property Type</label>
+                    <select id="typeFilter" onchange="applyFilters()">
+                        <option value="">All Types</option>
+                        <option value="House">House</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Condo">Condo</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>Price Range</label>
+                    <select id="priceFilter" onchange="applyFilters()">
+                        <option value="">Any Price</option>
+                        <option value="0-300000">Under $300k</option>
+                        <option value="300000-500000">$300k - $500k</option>
+                        <option value="500000-800000">$500k - $800k</option>
+                        <option value="800000-99999999">$800k+</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>Bedrooms</label>
+                    <select id="bedroomFilter" onchange="applyFilters()">
+                        <option value="">Any</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>Sort By</label>
+                    <select id="sortFilter" onchange="applyFilters()">
+                        <option value="default">Default</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="beds">Most Bedrooms</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-tags">
+                <div class="tag" data-status="sale" onclick="toggleTag(this)">For Sale</div>
+                <div class="tag" data-status="rent" onclick="toggleTag(this)">For Rent</div>
+                <div class="tag" data-feature="pool" onclick="toggleTag(this)">Pool</div>
+                <div class="tag" data-feature="garage" onclick="toggleTag(this)">Garage</div>
+                <div class="tag" data-feature="garden" onclick="toggleTag(this)">Garden</div>
+            </div>
+        </div>
+
+        <!-- Properties Header -->
+        <div class="properties-header">
+            <h2>Available Properties (<span id="propertyCount">0</span>)</h2>
+        </div>
+
+        <!-- Properties Grid -->
+        <div class="properties-grid" id="propertiesGrid"></div>
+    </main>
+
+    <!-- Property Detail Modal -->
+    <div class="modal" id="propertyModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-image" id="modalImage">🏠</div>
+            <div class="modal-body">
+                <span class="property-type" id="modalType"></span>
+                <div class="modal-price" id="modalPrice"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-location" id="modalLocation"></p>
+                
+                <div class="modal-features">
+                    <div class="modal-feature">
+                        <div class="modal-feature-value" id="modalBeds"></div>
+                        <div class="modal-feature-label">Bedrooms</div>
+                    </div>
+                    <div class="modal-feature">
+                        <div class="modal-feature-value" id="modalBaths"></div>
+                        <div class="modal-feature-label">Bathrooms</div>
+                    </div>
+                    <div class="modal-feature">
+                        <div class="modal-feature-value" id="modalArea"></div>
+                        <div class="modal-feature-label">Sq Ft</div>
+                    </div>
+                    <div class="modal-feature">
+                        <div class="modal-feature-value" id="modalStatus"></div>
+                        <div class="modal-feature-label">Status</div>
+                    </div>
+                </div>
+
+                <div class="modal-description" id="modalDescription"></div>
+                
+                <button class="contact-btn">Contact Agent</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Property Data
+        const properties = [
+            {
+                id: 1,
+                title: "Luxurious Family Villa",
+                price: 35000000,
+                location: "Banjara Hills, Hyderabad",
+                type: "House",
+                beds: 4,
+                baths: 3,
+                area: 2500,
+                status: "sale",
+                features: ["pool", "garage", "garden"],
+                image: "house1.jpg", // ADD YOUR IMAGE HERE
+                description: "Beautiful modern home with spacious living areas, modular kitchen, and large lawn. Perfect for families looking for comfort and style in prime Hyderabad location."
+            },
+            {
+                id: 2,
+                title: "Downtown Premium Apartment",
+                price: 45000,
+                location: "Connaught Place, Delhi",
+                type: "Apartment",
+                beds: 2,
+                baths: 2,
+                area: 1200,
+                status: "rent",
+                features: ["garage"],
+                image: "house2.jpg", // ADD YOUR IMAGE HERE
+                description: "Stunning apartment in the heart of Delhi. Features large windows, modern amenities, and breathtaking city views. Close to metro station."
+            },
+            {
+                id: 3,
+                title: "Beachfront Luxury Villa",
+                price: 95000000,
+                location: "Juhu Beach, Mumbai",
+                type: "Villa",
+                beds: 5,
+                baths: 4,
+                area: 4000,
+                status: "sale",
+                features: ["pool", "garage", "garden"],
+                image: "house3.jpg", // ADD YOUR IMAGE HERE
+                description: "Exclusive beachfront property with private beach access. Luxury finishes throughout, infinity pool, and panoramic Arabian Sea views."
+            },
+            {
+                id: 4,
+                title: "Cozy Suburban Villa",
+                price: 28000000,
+                location: "Whitefield, Bangalore",
+                type: "House",
+                beds: 3,
+                baths: 2,
+                area: 1800,
+                status: "sale",
+                features: ["garage", "garden"],
+                image: "house4.jpg", // ADD YOUR IMAGE HERE
+                description: "Charming home in peaceful IT corridor area. Features include modern appliances, vitrified tiles, and lovely garden perfect for entertaining."
+            },
+            {
+                id: 5,
+                title: "City Center Premium Flat",
+                price: 35000,
+                location: "MG Road, Pune",
+                type: "Condo",
+                beds: 2,
+                baths: 1,
+                area: 950,
+                status: "rent",
+                features: [],
+                image: "house5.png", // ADD YOUR IMAGE HERE
+                description: "Modern flat in prime location. Walking distance to restaurants, malls, and entertainment. Building features gym and terrace garden."
+            },
+            {
+                id: 6,
+                title: "Hill View Mansion",
+                price: 72000000,
+                location: "Lavelle Road, Bangalore",
+                type: "House",
+                beds: 4,
+                baths: 3,
+                area: 3200,
+                status: "sale",
+                features: ["pool", "garage", "garden"],
+                image: "house6.jpg", // ADD YOUR IMAGE HERE
+                description: "Spectacular city views from this custom-built home. Open floor plan, Italian marble flooring, and spacious master suite with private balcony."
+            },
+            {
+                id: 7,
+                title: "Heritage Bungalow",
+                price: 55000,
+                location: "Civil Lines, Jaipur",
+                type: "House",
+                beds: 3,
+                baths: 2,
+                area: 1600,
+                status: "rent",
+                features: ["garden"],
+                image: "house7.jpeg", // ADD YOUR IMAGE HERE
+                description: "Beautiful heritage bungalow with modern updates. Traditional Rajasthani architecture, carved wooden doors, and private courtyard garden."
+            },
+            {
+                id: 8,
+                title: "Lakeside Premium Villa",
+                price: 48000000,
+                location: "Powai, Mumbai",
+                type: "Villa",
+                beds: 3,
+                baths: 3,
+                area: 2800,
+                status: "sale",
+                features: ["pool", "garage", "garden"],
+                image: "house8.jpg", // ADD YOUR IMAGE HERE
+                description: "Peaceful lakeside property with stunning lake views. Perfect for nature lovers. Features include fireplace and large balconies."
+            },
+            {
+                id: 9,
+                title: "Modern Studio Apartment",
+                price: 25000,
+                location: "Koramangala, Bangalore",
+                type: "Apartment",
+                beds: 1,
+                baths: 1,
+                area: 850,
+                status: "rent",
+                features: [],
+                image: "house9.jpg", // ADD YOUR IMAGE HERE
+                description: "Contemporary studio with high ceilings and large windows. Exposed brick walls and wooden flooring give this space unique character."
+            },
+            {
+                id: 10,
+                title: "Grand Family Estate",
+                price: 85000000,
+                location: "Defence Colony, Delhi",
+                type: "House",
+                beds: 5,
+                baths: 4,
+                area: 3800,
+                status: "sale",
+                features: ["pool", "garage", "garden"],
+                image: "house10.jpg", // ADD YOUR IMAGE HERE
+                description: "Impressive estate on large plot. Features include modular kitchen, home theater, pool with jacuzzi, and covered parking for 3 cars."
+            },
+            {
+                id: 11,
+                title: "Compact Studio Flat",
+                price: 22000,
+                location: "Bandra West, Mumbai",
+                type: "Apartment",
+                beds: 1,
+                baths: 1,
+                area: 600,
+                status: "rent",
+                features: [],
+                image: "house11.jpeg", // ADD YOUR IMAGE HERE
+                description: "Efficient studio in vibrant neighborhood. Perfect for young professionals. Building amenities include fitness center and security."
+            },
+            {
+                id: 12,
+                title: "Luxury Penthouse",
+                price: 150000000,
+                location: "Worli, Mumbai",
+                type: "Condo",
+                beds: 4,
+                baths: 4,
+                area: 3500,
+                status: "sale",
+                features: ["pool", "garage"],
+                image: "house12.jpg", // ADD YOUR IMAGE HERE
+                description: "Stunning penthouse with 360-degree city and sea views. Features include private elevator, imported fittings, and expansive terrace with outdoor kitchen."
+            }
+        ];
+
+        let filteredProperties = [...properties];
+        let activeFilters = {
+            search: '',
+            type: '',
+            price: '',
+            beds: '',
+            sort: 'default',
+            status: [],
+            features: []
+        };
+
+        // Initialize
+        renderProperties();
+
+        function renderProperties() {
+            const grid = document.getElementById('propertiesGrid');
+            const count = document.getElementById('propertyCount');
+            
+            if (filteredProperties.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <h3>No properties found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+                count.textContent = '0';
+                return;
+            }
+
+            grid.innerHTML = filteredProperties.map(property => `
+                <div class="property-card" onclick="openModal(${property.id})">
+                    <div class="property-image">
+                        ${property.image ? `<img src="${property.image}" alt="${property.title}">` : '🏠'}
+                    </div>
+                    <div class="property-content">
+                        <span class="property-type">${property.type}</span>
+                        <div class="property-price">₹${property.price.toLocaleString('en-IN')}${property.status === 'rent' ? '/mo' : ''}</div>
+                        <h3 class="property-title">${property.title}</h3>
+                        <p class="property-location">📍 ${property.location}</p>
+                        <div class="property-features">
+                            <span class="feature">🛏️ ${property.beds} beds</span>
+                            <span class="feature">🚿 ${property.baths} baths</span>
+                            <span class="feature">📏 ${property.area} sqft</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            count.textContent = filteredProperties.length;
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const type = document.getElementById('typeFilter').value;
+            const priceRange = document.getElementById('priceFilter').value;
+            const beds = document.getElementById('bedroomFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+
+            activeFilters.search = search;
+            activeFilters.type = type;
+            activeFilters.price = priceRange;
+            activeFilters.beds = beds;
+            activeFilters.sort = sort;
+
+            filteredProperties = properties.filter(property => {
+                // Search filter
+                if (search && !property.title.toLowerCase().includes(search) && 
+                    !property.location.toLowerCase().includes(search)) {
+                    return false;
+                }
+
+                // Type filter
+                if (type && property.type !== type) {
+                    return false;
+                }
+
+                // Price filter
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-').map(Number);
+                    if (property.price < min || property.price > max) {
+                        return false;
+                    }
+                }
+
+                // Bedroom filter
+                if (beds && property.beds < parseInt(beds)) {
+                    return false;
+                }
+
+                // Status filter
+                if (activeFilters.status.length > 0 && !activeFilters.status.includes(property.status)) {
+                    return false;
+                }
+
+                // Features filter
+                if (activeFilters.features.length > 0) {
+                    const hasAllFeatures = activeFilters.features.every(f => property.features.includes(f));
+                    if (!hasAllFeatures) return false;
+                }
+
+                return true;
+            });
+
+            // Sort
+            if (sort === 'price-low') {
+                filteredProperties.sort((a, b) => a.price - b.price);
+            } else if (sort === 'price-high') {
+                filteredProperties.sort((a, b) => b.price - a.price);
+            } else if (sort === 'beds') {
+                filteredProperties.sort((a, b) => b.beds - a.beds);
+            }
+
+            renderProperties();
+        }
+
+        function toggleTag(element) {
+            element.classList.toggle('active');
+            
+            const status = element.getAttribute('data-status');
+            const feature = element.getAttribute('data-feature');
+
+            if (status) {
+                const index = activeFilters.status.indexOf(status);
+                if (index > -1) {
+                    activeFilters.status.splice(index, 1);
+                } else {
+                    activeFilters.status.push(status);
+                }
+            }
+
+            if (feature) {
+                const index = activeFilters.features.indexOf(feature);
+                if (index > -1) {
+                    activeFilters.features.splice(index, 1);
+                } else {
+                    activeFilters.features.push(feature);
+                }
+            }
+
+            applyFilters();
+        }
+
+        function openModal(id) {
+            const property = properties.find(p => p.id === id);
+            if (!property) return;
+
+            document.getElementById('modalType').textContent = property.type;
+            document.getElementById('modalPrice').textContent = `₹${property.price.toLocaleString('en-IN')}${property.status === 'rent' ? '/mo' : ''}`;
+            document.getElementById('modalTitle').textContent = property.title;
+            document.getElementById('modalLocation').textContent = `📍 ${property.location}`;
+            document.getElementById('modalBeds').textContent = property.beds;
+            document.getElementById('modalBaths').textContent = property.baths;
+            document.getElementById('modalArea').textContent = property.area.toLocaleString();
+            document.getElementById('modalStatus').textContent = property.status === 'sale' ? 'For Sale' : 'For Rent';
+            document.getElementById('modalDescription').textContent = property.description;
+
+            const modalImage = document.getElementById('modalImage');
+            if (property.image) {
+                modalImage.innerHTML = `<img src="${property.image}" alt="${property.title}">`;
+            } else {
+                modalImage.innerHTML = '🏠';
+            }
+
+            document.getElementById('propertyModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('propertyModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('propertyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
+        });
+    </script>
+</body>
+</html>
